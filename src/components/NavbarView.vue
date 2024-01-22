@@ -2,6 +2,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 
+import {useLoginStore} from '@/stores/LoginStore'
+
+const loginStore = useLoginStore()
+
+
 const navigation = [
   { name: 'Cine Carnival', href: 'https://klcinecarnival24.netlify.app', current: true },
   { name: 'Raaga', href: 'https://klraaga24.netlify.app', current: false },
@@ -15,6 +20,9 @@ function openWebpage(link){
   window.open(link, '_blank');
 }
 
+function loginClicked(){
+  loginStore.showLoginDialog = true
+}
 
 </script>
 
@@ -31,15 +39,19 @@ function openWebpage(link){
             <XMarkIcon v-else class="block h-6 w-6 stroke-2" aria-hidden="true" />
           </DisclosureButton>
         </div>
-        <div class="flex flex-1 items-center justify-between md:items-stretch">
+        <div class="flex flex-1 items-center justify-between md:items-stretch w-full">
           <div class="hidden md:ml-6 md:block">
             <div class="flex space-x-4">
               <button @click="openWebpage(item.href)" v-for="item in navigation" :key="item.name" :class="['tracking-wide nav-item', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</button>
             </div>
           </div>
-          <button
-            :class="['tracking-wide nav-item', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
-          >Login</button>
+          <div class="flex max-md:w-full justify-end items-center">
+            <button
+              @click="loginClicked"
+              :class="['tracking-wide nav-item flex justify-end', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
+            >Login</button>
+          </div>
+          
           
         </div>
       </div>

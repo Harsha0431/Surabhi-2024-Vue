@@ -7,6 +7,14 @@ import FestsCardsView from './FestsCardsView.vue';
 import CultureView from './CultureView.vue';
 import TeamViewP5 from './TeamViewP5.vue';
 import { ref } from 'vue';
+import LoginView from './LoginView.vue';
+
+import {useLoginStore} from '@/stores/LoginStore'
+import FooterView from './FooterView.vue'
+
+
+
+const loginStore = useLoginStore()
 
 const visible = ref(true)
 
@@ -25,6 +33,7 @@ window.addEventListener('scroll', handleScroll);
 
 <template>
   <main class="w-full h-full flex flex-col">
+    <LoginView v-if="loginStore.showLoginDialog" />
     <header>
       <IntroViewP1 />
     </header>
@@ -34,9 +43,9 @@ window.addEventListener('scroll', handleScroll);
     <div class="">
       <AboutViewP2 />
     </div>
-    <div>
+    <!-- <div>
       <CultureView />
-    </div>
+    </div> -->
     <div>
       <FestsCardsView />
     </div>
@@ -46,6 +55,6 @@ window.addEventListener('scroll', handleScroll);
     <div>
       <GalleryView />
     </div>
-
+    <FooterView />
   </main>
 </template>

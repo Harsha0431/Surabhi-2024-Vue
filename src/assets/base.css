@@ -78,3 +78,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Vant */
+:root:root{
+  --van-step-circle-color	: white;
+  --van-background-2: transparent;
+  /* For step circle */
+  --van-padding-xs: 0px ;
+
+  --van-step-finish-text-color: #07c160;
+}

@@ -27,4 +27,22 @@ app.use(router)
 
 app.use(VueSplide)
 
+
+// Vant
+import 'vant/lib/index.css'
+import { Locale, Dialog, Step, Steps, Form, Field, CellGroup, ConfigProvider } from 'vant'
+import enUS from 'vant/lib/locale/lang/en-US'
+
+app.use(ConfigProvider)
+
+Locale.use('en-US', enUS)
+app.use(Dialog)
+
+app.use(Form)
+app.use(Field)
+app.use(CellGroup)
+
+app.use(Step)
+app.use(Steps)
+
 app.mount('#app')
