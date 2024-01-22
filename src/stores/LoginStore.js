@@ -35,12 +35,36 @@ export const useLoginStore = defineStore('login-store',() => {
     const departmentList = ref([])
     const stateList = ref([])
 
+    function resetAttributes() {
+        loginUsername.value = ''
+        loginPassword.value = ''
+        currentStep.value = 0
+        registerUsername.value = ''
+        registerPassword.value = ''
+        registerConformPassword.value = ''
+        name.value = ''
+        email.value = ''
+        phone.value = ''
+        state.value = ''
+        gender.value = ''
+        department.value = ''
+        year.value = ''
+        college.value = ''
+        registerPlanList.value = []
+        selectedRegisterPlan.value = -1
+        transactionId.value = ''
+        collegeList.value = []
+        departmentList.value = []
+        stateList.value = ''
+    }
 
 
-    const fetchRequiredList = async() => {
+
+    const fetchRequiredList = async () => {
+        if (registerPlanList.value.length > 0 && stateList.value.length > 0 && departmentList.value.length > 0 && collegeList.value.length > 0)
+            return
         await getRegisterList()
             .then((res) => {
-                console.log(res)
                 if (res.code == 1) {
                     const data = res.data
                     registerPlanList.value = data.register
@@ -71,6 +95,7 @@ export const useLoginStore = defineStore('login-store',() => {
         name,
         registerPlanList, collegeList , stateList , departmentList , fetchRequiredList,
         selectedRegisterPlan,
-        transactionId
+        transactionId,
+        resetAttributes
     }
 })

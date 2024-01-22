@@ -45,4 +45,8 @@ app.use(CellGroup)
 app.use(Step)
 app.use(Steps)
 
+//Cookies
+import VueCookies from 'vue-cookies'
+app.use(VueCookies)
+
 app.mount('#app')

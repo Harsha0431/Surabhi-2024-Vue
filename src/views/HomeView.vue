@@ -6,15 +6,18 @@ import GalleryView from './GalleryView.vue';
 import FestsCardsView from './FestsCardsView.vue';
 import CultureView from './CultureView.vue';
 import TeamViewP5 from './TeamViewP5.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import LoginView from './LoginView.vue';
 
 import {useLoginStore} from '@/stores/LoginStore'
 import FooterView from './FooterView.vue'
+import ToastsView from '@/components/ToastsView.vue';
+import {useUserStore} from '@/stores/UserStore'
 
 
 
 const loginStore = useLoginStore()
+const userStore = useUserStore()
 
 const visible = ref(true)
 
@@ -27,12 +30,17 @@ const handleScroll = () => {
     prevScrollPos.value = currentScrollPos;
 };
 
+onMounted(async()=>{
+  await userStore.checkForTokenAuthentication()
+})
+
 window.addEventListener('scroll', handleScroll);
 
 </script>
 
 <template>
   <main class="w-full h-full flex flex-col">
+    <ToastsView />
     <LoginView v-if="loginStore.showLoginDialog" />
     <header>
       <IntroViewP1 />

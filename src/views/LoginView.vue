@@ -1,9 +1,21 @@
 <script setup>
 import {useLoginStore} from '@/stores/LoginStore'
-import { computed } from 'vue'
+import { computed , ref } from 'vue'
 import qr_code from '@/assets/qr_code.jpg'
 
+import {registerService , loginService} from '@/service/Login/loginService'
+
+import { ToastStore } from '@/stores/ToastStore'
+import {useUserStore} from '@/stores/UserStore'
+
+import VueCookies from 'vue-cookies';
+
 const loginStore = useLoginStore()
+const toastStore = ToastStore()
+const userStore = useUserStore()
+
+const loginInProgress = ref(false)
+const registerInProgress = ref(false)
 
 const dialogWidth = computed(()=>{
     const width = window.innerWidth
@@ -13,8 +25,54 @@ const dialogWidth = computed(()=>{
     return width>576?'500px':'98%'
 })
 
-const handleFormSubmit = (values) =>{
-    console.log(values)
+const handleLoginSubmit = async() =>{
+    try{
+        loginInProgress.value = true
+        await loginService({
+            id: loginStore.loginUsername,
+            password: loginStore.loginPassword
+        })
+            .then((res)=>{
+                if(res.code == 1){
+                    userStore.token = res.token
+                    userStore.isLoggedIn = true
+                    userStore.username = loginStore.loginUsername
+                    VueCookies.set('user-token' , res.token , '1d')
+                    toastStore.message = res.message
+                    toastStore.type = 'success'
+                    toastStore.showToast = true
+                    setTimeout(()=>{loginStore.showLoginDialog=false}, 500)
+                    loginStore.resetAttributes()
+                }
+                else{
+                    toastStore.message = res.message
+                    toastStore.type = 'alert'
+                    toastStore.showToast = true
+                }
+            })
+            .catch((e)=>{
+                console.error("Failed to login: " + e.message)
+                toastStore.message = 'Failed to login'
+                toastStore.type = 'alert'
+                toastStore.showToast = true
+            })
+            .finally(()=>{
+                setTimeout(()=>{
+                    loginInProgress.value = false
+                },1000)
+            })
+    }
+    catch(e){
+        console.error("Failed to login: " + e.message)
+        toastStore.message = 'Failed to login'
+        toastStore.type = 'alert'
+        toastStore.showToast = true
+    }
+    finally{
+        setTimeout(()=>{
+            loginInProgress.value = false
+        },1000)
+    }
 }
 
 const handleCloseDialog = () =>{
@@ -26,7 +84,7 @@ const handleSwitchToRegister = async() =>{
     loginStore.isLoginDialog = false
 }
 
-const handleRegisterBtnClick = () =>{
+const handleRegisterBtnClick = async() =>{
     const data = {
         id:loginStore.registerUsername ,
         password: loginStore.registerConformPassword ,
@@ -37,9 +95,38 @@ const handleRegisterBtnClick = () =>{
         gender: loginStore.gender,
         state: loginStore.state,
         department: loginStore.department,
+        transaction_id: loginStore.transactionId,
         register_plan: loginStore.selectedRegisterPlan
     }
-    console.log(data)
+    registerInProgress.value = true
+    await registerService(data)
+        .then((res)=>{
+            if(res.code == 1){
+                toastStore.message = res.message
+                toastStore.type = 'success'
+                toastStore.showToast = true
+                setTimeout(()=>{loginStore.isLoginDialog = true}, 1000)
+                //TODO: Uncomment below line at time of production
+                // loginStore.resetAttributes()
+            }
+            else{
+                toastStore.message = res.message
+                toastStore.type = 'alert'
+                toastStore.showToast = true
+                setTimeout(()=>{loginStore.isLoginDialog = true}, 1000)
+            }
+        })
+        .catch((e)=>{
+            console.error("Failed to register: " + e.message)
+            toastStore.message = 'Failed to register'
+            toastStore.type = 'alert'
+            toastStore.showToast = true
+        })
+        .finally(()=>{
+            setTimeout(()=>{
+                registerInProgress.value = false
+            },1000)
+        })
 }
 
 
@@ -50,7 +137,30 @@ const handleRegisterFormSubmit = () =>{
     }
     if(loginStore.currentStep==0){
         if(loginStore.registerPassword != loginStore.registerConformPassword)
-            alert("Conform password doesn't match with original password")
+        {
+            toastStore.message = "Conform password doesn't match with original password"
+            toastStore.type = 'alert'
+            toastStore.showToast = true
+            return
+        }
+    }
+    if(loginStore.currentStep==1){
+        if(loginStore.state.length<=0 || loginStore.gender.length<=0)
+        {
+            toastStore.message = "Please fill State and Gender fields"
+            toastStore.type = 'alert'
+            toastStore.showToast = true
+            return
+        }
+    }
+    if(loginStore.currentStep==2){
+        if(loginStore.college.length<=0 || loginStore.department.length<=0)
+        {
+            toastStore.message = "Please fill Institution and Department fields"
+            toastStore.type = 'alert'
+            toastStore.showToast = true
+            return
+        }
     }
     loginStore.currentStep+=1
 }
@@ -72,7 +182,7 @@ const handleRegisterFormSubmit = () =>{
                 <div class="">
                     <div class="flex flex-col gap-3 max-vsm:gap-2">
                         <div class="">
-                            <form @submit.prevent="handleFormSubmit" v-if="loginStore.isLoginDialog">
+                            <form @submit.prevent="handleLoginSubmit" v-if="loginStore.isLoginDialog">
                                 <div class="ssm:px-2">
                                     <div class="relative z-0 w-full mb-5 group">
                                         <input v-model="loginStore.loginUsername" type="text" name="floating_email" id="floating_email" class="tracking-wider block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 appearance-none text-white border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-400 peer" placeholder=" " required />
@@ -83,8 +193,8 @@ const handleRegisterFormSubmit = () =>{
                                         <label for="floating_password" class="tracking-wider peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-gray-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
                                     </div>
                                     <div class="flex justify-center">
-                                        <button type="submit" class="bg-[#454343e0] hover:bg-[#454343ca] hover:scale-[0.97] hover:animate-pulse transition-all text-gray-300 tracking-wider ssm:font-[2px] font-extrabold px-3 py-2 rounded-xl font-merriweather">
-                                            LOGIN
+                                        <button :disabled="loginInProgress || userStore.isLoggedIn" type="submit" class="bg-[#454343e0] hover:bg-[#454343ca] hover:scale-[0.97] hover:animate-pulse transition-all text-gray-300 tracking-wider ssm:font-[2px] font-extrabold px-3 py-2 rounded-xl font-merriweather">
+                                            {{ userStore.isLoggedIn ? 'Logged In': loginInProgress? 'Logging In...':'LOGIN' }}
                                         </button>
                                     </div>
                                 </div>
@@ -96,7 +206,15 @@ const handleRegisterFormSubmit = () =>{
                                         <van-step style="background-color: transparent;">Login</van-step>
                                         <van-step style="background-color: transparent;">Personal</van-step>
                                         <van-step style="background-color: transparent;">Academic</van-step>
-                                        <van-step style="background-color: transparent;">Payment</van-step>
+                                        
+                                        <van-step style="background-color: transparent;">
+                                            <span v-if="loginStore.selectedRegisterPlan!=-1">
+                                                Payment
+                                            </span>
+                                            <span v-if="loginStore.selectedRegisterPlan==-1">
+                                                Select plan
+                                            </span>
+                                        </van-step>
                                     </van-steps>
                                 </div>
                                 <div>
@@ -106,7 +224,7 @@ const handleRegisterFormSubmit = () =>{
                                             <label for="floating_username" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Username or College registration ID</label>
                                         </div>
                                         <div class="relative w-full z-0 mb-5 group">
-                                            <input v-model="loginStore.registerPassword" min='5' pattern="^[^ ]+$" type="password" name="floating_password" id="floating_password" class="tracking-wider block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 appearance-none text-white border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-400 peer" placeholder=" " required />
+                                            <input minlength="5" v-model="loginStore.registerPassword" min='5' pattern="^[^ ]+$" type="password" name="floating_password" id="floating_password" class="tracking-wider block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 appearance-none text-white border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-400 peer" placeholder=" " required />
                                             <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Enter Password</label>
                                         </div>
                                         <div class="relative w-full z-0 mb-5 group">
@@ -164,32 +282,55 @@ const handleRegisterFormSubmit = () =>{
                                         </div>
                                     </div>
                                     <div v-if="loginStore.currentStep==3" class="academic-details flex gap-1 flex-col">
-                                        <div class="flex justify-center w-full pb-4">
+                                        <div class="relative z-0 w-full mb-5 group">
+                                            <span class="text-gray-300 text-[16px] max-vsm:text-[15px]">Select Plan</span>
+                                            <ul class="w-full text-sm font-medium  rounded-lg border-gray-600 flex gap-1 flex-wrap">
+                                                <li @click="loginStore.selectedRegisterPlan = plan.id" v-for="plan in loginStore.registerPlanList" :key="plan.id" class="w-full border-b rounded-t-lg border-gray-600">
+                                                    <div class="flex items-center ps-3 w-full">
+                                                        <input
+                                                            :id="'list-radio-license-' + plan.id"
+                                                            type="radio"
+                                                            :value="plan.id"
+                                                            v-model="loginStore.selectedRegisterPlan"
+                                                            name="list-radio"
+                                                            class="w-4 h-4 text-blue-600 ring-offset-gray-700 bg-gray-600 border-gray-500"
+                                                        />
+                                                        <label
+                                                            :for="'list-radio-license-' + plan.id"
+                                                            class="w-full py-3 ms-2 text-sm font-medium text-gray-300"
+                                                        >
+                                                            {{ plan.description }}
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div v-if="loginStore.selectedRegisterPlan!=-1" class="flex justify-center w-full pb-4">
                                             <img alt="" :src='qr_code' class="max-w-[200px]"/>
                                         </div>
-                                        <div class="relative z-0 w-full mb-5 group">
+                                        <div v-if="loginStore.selectedRegisterPlan!=-1" class="relative z-0 w-full mb-5 group">
                                             <input v-model="loginStore.transactionId" pattern="^[a-zA-Z0-9. ]+$" type="text" name="floating_transaction" id="floating_transaction" class="tracking-wider block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 appearance-none text-white border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-400 peer" placeholder=" " required />
                                             <label for="floating_transaction" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Transaction ID</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex text-gray-100 justify-between rounded-lg">
-                                    <button type="button" class="justify-center flex w-full px-4 py-2 bg-[#fa5252] hover:bg-[#ff5555]" v-if="loginStore.currentStep>0">
-                                        <span class="w-full transition-all"  @click="loginStore.currentStep-=1">Prev</span>
+                                <div class="flex text-gray-100 justify-between rounded-lg font-semibold">
+                                    <button :disabled="registerInProgress || userStore.isLoggedIn" type="button" class="justify-center flex w-full px-4 py-2 bg-[#fa5252] hover:bg-[#ff5555]" v-if="loginStore.currentStep>0">
+                                        <span class="w-full transition-all font-semibold"  @click="loginStore.currentStep-=1">Prev</span>
                                     </button>
-                                    <button type="submit" class="justify-center flex w-full px-4 py-2 bg-[#07c160] hover:bg-[#07c160]" v-if="loginStore.currentStep<=3">
-                                        <span v-if="loginStore.currentStep<3" class=" transition-all" >Next</span>
-                                        <span v-if="loginStore.currentStep==3" class=" transition-all" >Register</span>
+                                    <button :disabled="registerInProgress || userStore.isLoggedIn" type="submit" class="justify-center flex w-full px-4 py-2 bg-[#07c160] hover:bg-[#07c160]" v-if="loginStore.currentStep<=3">
+                                        <span v-if="loginStore.currentStep<3" class="font-semibold transition-all" >Next</span>
+                                        <span v-if="loginStore.currentStep==3" class="font-semibold transition-all" >{{ registerInProgress ? 'Register Inprogress...': 'Register' }}</span>
                                     </button>
                                 </div>
                             </form>
                         </div>
                         <div class="py-2 text-gray-400 ssm:text-[14px] tracking-wide">
                             <span v-if="loginStore.isLoginDialog" class="dialog-footer">
-                                Not yet registered? <button @click="handleSwitchToRegister" class="from-left text-blue-500 hover:text-blue-600 transition-all">Register</button>
+                                Not yet registered? <button @click="handleSwitchToRegister" class="from-left text-blue-500  transition-all">Register</button>
                             </span>
                             <span v-else class="dialog-footer">
-                                Already registered? <button @click="loginStore.isLoginDialog=true" class="from-left text-blue-500 hover:text-blue-600 transition-all">Login</button>
+                                Already registered? <button @click="loginStore.isLoginDialog=true" class="from-left text-blue-500  transition-all">Login</button>
                             </span>
                         </div>
                     </div>
@@ -230,6 +371,6 @@ const handleRegisterFormSubmit = () =>{
 }
 
 .dialog-body::-webkit-scrollbar-track {
-    background-color: #000015;
+    background-color: #1e1717b5;
 }
 </style>

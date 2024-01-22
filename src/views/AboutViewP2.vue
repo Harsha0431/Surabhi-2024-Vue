@@ -1,7 +1,7 @@
 <script setup>
-import SurabhiLogo from '../assets/surabhi_logo.png'
-import SurabhiTextLogo from '../assets/SurabhiTextLogo.png'
-import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
+// import SurabhiLogo from '../assets/surabhi_logo.png'
+// import SurabhiTextLogo from '../assets/SurabhiTextLogo.png'
+// import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
 
 
 </script>
@@ -18,7 +18,7 @@ import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
             </div>
             <div class="flex flex-col justify-end max-lg:order-1 lg:max-w-[50%] xxl:pr-8 gap-2">
                 <video loop autoplay muted class="relative top-0 w-full h-full object-contain max-ssm:object-fill max-lg:max-w-[550px] max-w-[650px]">
-                    <source :src="surabhi_rotation_92" type="video/mp4">
+                    <source :src="'https://firebasestorage.googleapis.com/v0/b/sharewithme-88880.appspot.com/o/surabhi_rotation_92.mp4?alt=media&token=28281f8f-6bad-401d-8a9c-cf4bd4fa3f8f'" type="video/mp4">
                 </video>
                 <!-- <img :src="SurabhiLogo" alt="Surabhi Logo"
                     class="xl:max-w-[350px] xl:max-h-[380px] lg:max-w-[300px] lg:max-h-[350px] md:max-w-[270px] md:max-h-[320px]

@@ -1,10 +1,14 @@
 <script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 
+import {useUserStore} from '@/stores/UserStore'
+
 import {useLoginStore} from '@/stores/LoginStore'
+import { RouterLink } from 'vue-router';
 
 const loginStore = useLoginStore()
+const userStore = useUserStore()
 
 
 const navigation = [
@@ -46,9 +50,33 @@ function loginClicked(){
             </div>
           </div>
           <div class="flex max-md:w-full justify-end items-center">
+            <!-- Profile dropdown -->
+            <Menu as="div" class="relative ml-3" v-if="userStore.isLoggedIn">
+              <div>
+                <MenuButton class="relative flex rounded-full bg-gray-800 text-sm ">
+                  <span class="absolute -inset-1.5" />
+                  <span class="sr-only">Open user menu</span>
+                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                </MenuButton>
+              </div>
+              <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItem>
+                    <span :class="['block px-4 py-2 text-sm text-gray-700 font-semibold']">{{ userStore.username }}</span>
+                  </MenuItem>
+                  <MenuItem class="w-full flex justify-start" v-slot="{ active }">
+                    <RouterLink to="/profile" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile</RouterLink>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }" class="w-full flex justify-start">
+                    <button @click="userStore.handleLogout" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</button>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
             <button
+              v-else
               @click="loginClicked"
-              :class="['tracking-wide nav-item flex justify-end', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
+              :class="['tracking-wide w-full nav-item flex justify-end', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
             >Login</button>
           </div>
           

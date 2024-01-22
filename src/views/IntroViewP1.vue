@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import SurabhiPromo from '../assets/SurabhiPromo.mp4';
+// import SurabhiPromo from '../assets/SurabhiPromo.mp4';
 
 const bgVideo = ref(null);
 
@@ -44,7 +44,7 @@ const startVideo = () => {
 
       </div>
       <video ref="bgVideo" loop autoplay muted class="relative top-0 w-full h-full object-cover max-ssm:object-fill">
-        <source :src="SurabhiPromo" type="video/mp4">
+        <source :src="'https://firebasestorage.googleapis.com/v0/b/sharewithme-88880.appspot.com/o/SurabhiPromo.mp4?alt=media&token=92d0897e-7fba-4524-abde-94315aad0f49'" type="video/mp4">
       </video>
     </div>
     
