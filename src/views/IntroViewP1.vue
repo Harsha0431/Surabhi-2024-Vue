@@ -44,7 +44,7 @@ const startVideo = () => {
 
       </div>
       <video ref="bgVideo" loop autoplay muted class="relative top-0 w-full h-full object-cover max-ssm:object-fill">
-        <source :src="'https://firebasestorage.googleapis.com/v0/b/sharewithme-88880.appspot.com/o/SurabhiPromo.mp4?alt=media&token=92d0897e-7fba-4524-abde-94315aad0f49'" type="video/mp4">
+        <source :src="'https://firebasestorage.googleapis.com/v0/b/profound-ship-400318.appspot.com/o/SurabhiPromo.mp4?alt=media&token=6c6a8011-787a-40d7-8ad1-d0b24057c8d4'" type="video/mp4">
       </video>
     </div>
     

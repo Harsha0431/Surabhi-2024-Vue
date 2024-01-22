@@ -1,6 +1,6 @@
 <template>
   <footer class="bg-gray-200">
-    <div class="navbar">
+    <div class="navbar flex flex-wrap gap-5">
       <div class="nav-child logo">
         <img src="../assets/surabhi_logo.png" alt="Logo" />
       </div>
@@ -43,9 +43,6 @@
 
 <style scoped>
 .navbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5rem;
   align-items: center;
   justify-content: space-between;
   padding: 35px 40px;

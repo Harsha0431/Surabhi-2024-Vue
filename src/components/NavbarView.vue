@@ -73,11 +73,13 @@ function loginClicked(){
                 </MenuItems>
               </transition>
             </Menu>
-            <button
-              v-else
+            <div v-else class="w-full flex justify-end">
+              <button
               @click="loginClicked"
-              :class="['tracking-wide w-full nav-item flex justify-end', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
+              :class="['tracking-wide nav-item', 'px-3 py-2 text-md font-extrabold text-[19px] max-lg:text-[18px] opacity-90 hover:opacity-100 transition-all font-croissant']"
             >Login</button>
+            </div>
+            
           </div>
           
           
