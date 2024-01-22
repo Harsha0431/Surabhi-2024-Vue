@@ -4,7 +4,6 @@ import IntroViewP1 from './IntroViewP1.vue';
 import AboutViewP2 from './AboutViewP2.vue';
 import GalleryView from './GalleryView.vue';
 import FestsCardsView from './FestsCardsView.vue';
-import CultureView from './CultureView.vue';
 import TeamViewP5 from './TeamViewP5.vue';
 import { onMounted, ref } from 'vue';
 import LoginView from './LoginView.vue';
@@ -51,9 +50,6 @@ window.addEventListener('scroll', handleScroll);
     <div class="">
       <AboutViewP2 />
     </div>
-    <!-- <div>
-      <CultureView />
-    </div> -->
     <div>
       <FestsCardsView />
     </div>
