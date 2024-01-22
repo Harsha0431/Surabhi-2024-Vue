@@ -14,6 +14,14 @@
           Pincode: <i>522 302</i>
         </p>
         <br />
+        <p class="text-black">Designed & Developed by<span class="relative mr-2"></span>
+          
+          <div class="font-montserrat text-black font-semibold">
+            Web Development Club<br />
+            Dinesh SriSanth Adari
+            <br />Harsha Vardhan Polamarasetty
+          </div>
+        </p>
       </div>
 
       <div class="contact-section flex flex-col text-center text-gray-800 relative mr-3">
