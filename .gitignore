@@ -13,7 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
-src/assets/*.mp4
+src/assets/SurabhiPromo.mp4
 
 /cypress/videos/
 /cypress/screenshots/
@@ -32,4 +32,4 @@ src/assets/*.mp4
 
 
 # Ignore larger files
-src/assets/*.mp4
+src/assets/SurabhiPromo.mp4
