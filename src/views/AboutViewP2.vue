@@ -7,7 +7,7 @@ import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
 </script>
 
 <template>
-    <div class="app-container flex max-ssm:pt-14 max-lg:flex-col justify-center py-8 pb-12 relative mt-24 max-lg:gap-8 max-xl:gap-12 gap-20 place-items-center">
+    <div class="app-container min-h-[90vh] flex max-ssm:pt-14 max-lg:flex-col justify-center py-8 pb-12 relative mt-24 max-lg:gap-8 max-xl:gap-12 gap-20 place-items-center">
         <div class="overlay-box2 xxl:w-[38%] order-2 xl:w-[43%] max-lg:w-[80%] max-md:px-4 max-sm:w-[90%] max-vsm:w-[95%] w-[45%] mb-3">
             <h2 class="overlay-heading2 font-extrabold font-montserrat text-left text-[50px] pb-8 max-sm:pb-4 max-lg:pb-4 max-sm:text-[55px] max-ssm:text-[45px] max-vsm:text-[35px] max-vvsm:text-[30px]">
                 Theme
@@ -18,21 +18,18 @@ import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
             </p>
         </div>
         <div class="flex flex-col justify-end max-lg:order-1 gap-3">
-            <!-- <video loop autoplay muted class="relative top-0 w-full h-full object-contain max-ssm:object-fill max-lg:max-w-[550px] max-w-[650px]">
-                <source :src="'https://firebasestorage.googleapis.com/v0/b/sharewithme-88880.appspot.com/o/surabhi_rotation_92.mp4?alt=media&token=28281f8f-6bad-401d-8a9c-cf4bd4fa3f8f'" type="video/mp4">
-            </video> -->
             <img :src="SurabhiLogo" alt="Surabhi Logo"
-                class="xl:max-w-[380px] xl:max-h-[350px] lg:max-w-[300px] lg:max-h-[320px]
-                    max-lg:w-[350px] max-md:w-[320px] max-vsm:w-[290px]"
+                class="xl:max-w-[320px] xl:max-h-[300px] lg:max-w-[280px] lg:max-h-[300px]
+                    max-lg:w-[320px] max-md:w-[300px] max-vsm:w-[270px]"
             >
             <img :src="SurabhiTextLogo" alt="Surabhi Text Logo"
-                class="xl:max-w-[350px] lg:max-w-[290px] max-lg:w-[330px] max-md:w-[300px] max-vsm:w-[290px]">
+                class="xl:max-w-[300px] lg:max-w-[290px] max-lg:w-[330px] max-md:w-[300px] max-vsm:w-[290px]">
         </div>
     </div>
     <!-- Cultural -->
-    <div class="app-container vsm:px-4 flex max-xl:flex-col justify-center pb-16 relative mt-24 max-lg:gap-8 max-xl:gap-12 gap-20 place-items-center">
+    <div class="app-container min-h-[100vh] vsm:px-4 flex max-xl:flex-col justify-center pb-16 relative mt-24 max-lg:gap-8 max-xl:gap-12 gap-20 place-items-center">
         <div class="flex flex-col justify-end max-xl:order-1 gap-3">
-            <video loop autoplay muted class="relative top-0 w-full h-full object-contain max-ssm:object-fill max-lg:max-w-[550px] max-w-[650px]">
+            <video loop autoplay muted class="relative top-0 w-full h-full object-contain max-ssm:object-fill max-lg:max-w-[520px] max-w-[650px]">
                 <source :src="surabhi_rotation_92" type="video/mp4">
             </video>
         </div>
@@ -53,7 +50,6 @@ import surabhi_rotation_92 from '../assets/surabhi_rotation_92.mp4'
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   overflow: hidden;
   margin: 0;
   background-color: rgb(0, 0, 0);

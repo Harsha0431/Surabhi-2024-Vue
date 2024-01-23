@@ -17,7 +17,7 @@
         <p class="text-black">Designed & Developed by<span class="relative mr-2"></span>
           
           <div class="font-montserrat text-black font-semibold">
-            Web Development Club<br />
+            Webapps Club<br />
             Dinesh SriSanth Adari
             <br />Harsha Vardhan Polamarasetty
           </div>

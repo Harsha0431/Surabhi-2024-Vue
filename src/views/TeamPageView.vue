@@ -33,7 +33,6 @@ const teams = [
                         name:'Yashasvi',
                         image:'https://i.postimg.cc/cHRR2vdx/yashasvi.png',
                     },
-                    
                 ]
             },
         ]
@@ -128,17 +127,17 @@ const teams = [
             role: '',
             members:[
                     {
-                        name:'User 1',
+                        name:'Harsha Vardhan Polamarasetty',
                         image:'https://i.postimg.cc/VL67rFYX/aishwariya.png',
                         designation:'DEG 1'
                     },
                     {
-                        name:'User 2',
+                        name:'Dinesh A',
                         image:'https://i.postimg.cc/VL67rFYX/aishwariya.png',
                         designation:'DEG 2'
                     },
                     {
-                        name:'User 3',
+                        name:'Ganesh Silla',
                         image:'https://i.postimg.cc/VL67rFYX/aishwariya.png',
                         designation:'DEG 3'
                     }

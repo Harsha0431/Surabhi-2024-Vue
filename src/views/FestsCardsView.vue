@@ -8,7 +8,7 @@ import { Splide, SplideSlide } from '@splidejs/vue-splide';
 const options = {
   rewind: true,
   autoplay: false,
-  perPage: 3,
+  perPage: 1,
   perMove: 1,
   gap:'1.4rem',
   padding:'1.3rem',
@@ -81,8 +81,9 @@ const handlePosterClick = (link) =>{
 <template>
     <div class="py-8 px-1 text-white">
         <div class="flex justify-between px-8 max-ssm:flex-col max-ssm:gap-1">
-            <button @click="router.push('/event/list')" class="text-center font-extrabold font-montserrat text-[45px] max-sm:text-[45px] max-ssm:text-[40px] max-vsm:text-[30px] max-vvsm:text-[30px]">Surabhi Fests</button>
-            <button @click="router.push('/event/list')" class="ssm:flex text-right place-items-end mb-2 relative">View All</button>
+          <!-- //TODO: Replace click function "router.push('/event/list')" to "router.push('/events view')" -->
+            <button @click="router.push('/events view')" class="text-center font-extrabold font-montserrat text-[45px] max-sm:text-[45px] max-ssm:text-[40px] max-vsm:text-[30px] max-vvsm:text-[30px]">Surabhi Fests</button>
+            <button @click="router.push('/events view')" class="ssm:flex text-right place-items-end mb-2 relative">View All</button>
         </div>
         <div class="flex justify-center items-center py-8">
             <Splide :options="options" class="flex justify-center">

@@ -361,7 +361,7 @@ onMounted(()=>{
                     <div class="details flex flex-col justify-center gap-4 py-2 pb-4">
                         <div class="flex justify-center">
                             <button class="view-btn px-5 font-bold font-montserrat py-2 rounded-3xl text-gray-300 hover:text-gray-100 tracking-wide transition-all hover:transition-all flex justify-center relative text-center w-min">
-                                <RouterLink :to="'/'">View</RouterLink>
+                                <RouterLink :to="event.name">View</RouterLink>
                             </button>
                         </div>
                     </div>
