@@ -7,6 +7,9 @@ import {useUserStore} from '@/stores/UserStore'
 import {useLoginStore} from '@/stores/LoginStore'
 import { RouterLink } from 'vue-router';
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const loginStore = useLoginStore()
 const userStore = useUserStore()
 
@@ -15,13 +18,16 @@ const navigation = [
   { name: 'Cine Carnival', href: 'https://klcinecarnival24.netlify.app', current: true },
   { name: 'Raaga', href: 'https://klraaga24.netlify.app', current: false },
   { name: 'Vastra Shala', href: 'https://klvastrashala24.netlify.app', current: false },
-  { name: 'Sahitya', href: 'https://klsahitya24.netlify.app', current: false },
-  { name: 'Nrithya', href: 'https://klnrithya24.netlify.app', current: false },
-  { name: 'Chitra Kala', href: 'https://klchitrakala24.netlify.app', current: false },
+  { name: 'Sahitya', href: 'https://klsaahitya24.netlify.app', current: false },
+  { name: 'Nrithya', href: '', current: false },
+  { name: 'Chitra Kala', href: '', current: false },
 ]
 
 function openWebpage(link){
-  window.open(link, '_blank');
+  if(link.length>0)
+    window.open(link, '_blank');
+  else
+    router.push({to:'page-not-found'})
 }
 
 function loginClicked(){
