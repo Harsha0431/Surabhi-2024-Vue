@@ -27,7 +27,7 @@ function openWebpage(link){
   if(link.length>0)
     window.open(link, '_blank');
   else
-    router.push({to:'page-not-found'})
+    router.push({name:'page-not-found'})
 }
 
 function loginClicked(){
